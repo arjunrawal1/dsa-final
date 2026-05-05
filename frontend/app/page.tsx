@@ -7,12 +7,21 @@ export default async function Home() {
 
   if (!session) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <AuthCard />
+      <main className="min-h-screen flex flex-col items-center justify-center gap-8 bg-muted/40 p-4">
+        <div className="text-center space-y-2">
+          <h1 className="text-4xl font-bold tracking-tight">
+            NCSSM Food Ordering
+          </h1>
+          <p className="text-muted-foreground">
+            Sign in to order food!
+          </p>
+        </div>
 
-      </div>
+        <AuthCard />
+      </main>
     );
   }
+
 
   return (
     <>

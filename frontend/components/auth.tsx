@@ -13,13 +13,27 @@ import { Label } from "@/components/ui/label"
 
 export function AuthCard() {
     return (
-        <Card className="w-full max-w-sm">
-            <Button type="submit" className="w-full">
-                Login
-            </Button>
-            <Button variant="outline" className="w-full">
-                <a href="/auth/login?screen_hint=signup">Sign up</a>
-            </Button>
+        <Card className="w-full max-w-sm border shadow-lg">
+            <CardHeader className="space-y-2 text-center">
+                <CardTitle className="text-2xl font-semibold">
+                    Welcome!
+                </CardTitle>
+                <CardDescription>
+                    Sign in to start ordering
+                </CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-3">
+                <Button asChild className="w-full">
+                    <a href="/auth/login">Log in</a>
+                </Button>
+
+                <Button asChild variant="outline" className="w-full">
+                    <a href="/auth/login?screen_hint=signup">Create account</a>
+                </Button>
+            </CardContent>
+
         </Card>
-    )
+    );
 }
+
