@@ -1,0 +1,6 @@
+.env.local
+node_modules
+.idea
+backend/package.json
+backend/package-lock.json
+backend/server.js
