@@ -10,6 +10,10 @@ from dotenv import load_dotenv
 from db import close_client
 from users_repo import UsersRepo
 from groups_repo import GroupsRepo
+from taste_graph_service import TasteGraph
+from pathlib import Path
+from fastapi.staticfiles import StaticFiles
+
 
 load_dotenv()
 
@@ -29,10 +33,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+TASTE_GRAPH_DIR = Path(__file__).parent / "taste_graph"
+
+app.mount(
+    "/taste-images",
+    StaticFiles(directory=TASTE_GRAPH_DIR / "images"),
+    name="taste_images",
+)
 
 
 users_repo = UsersRepo()
 groups_repo = GroupsRepo(users_repo)
+taste_graph = TasteGraph(TASTE_GRAPH_DIR)
 
 
 
@@ -85,6 +97,22 @@ async def get_me(uid: str = Depends(current_user_id)):
 async def list_groups(uid: str = Depends(current_user_id)):
     groups = await groups_repo.open_groups_with_users(uid)
     return {"groups": groups}
+
+@app.get("/food/search")
+async def search_food(q: str = "", limit: int = 18, items_per_restaurant: int = 6):
+    try:
+        return taste_graph.search(q, limit, items_per_restaurant)
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=503, detail=f"Taste graph data is missing: {e}")
+
+@app.get("/food/items/{item_id}/similar")
+async def similar_food_items(item_id: int, top_k: int = 10):
+    try:
+        return {"items": taste_graph.similar_items(item_id, top_k)}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
 
 @app.post("/groups")
 async def create_group(body: CreateGroupBody, uid: str = Depends(current_user_id)):

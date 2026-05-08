@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { auth0 } from "@/lib/auth0";
 import { AuthCard } from "@/components/auth";
-import { UtensilsCrossed, PlusCircle, LogOut } from "lucide-react";
+import { Search, UtensilsCrossed, PlusCircle, LogOut } from "lucide-react";
 
 const API = process.env.BACKEND_URL ?? "http://localhost:8000";
 
@@ -85,6 +85,20 @@ export default async function Home() {
                 <p className="font-semibold">Start a Group Order</p>
                 <p className="text-sm text-muted-foreground">
                   Pick a restaurant, set a deadline, and let others join.
+                </p>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/food">
+            <div className="group flex items-center gap-5 rounded-xl border bg-background p-5 shadow-sm transition-shadow hover:shadow-md cursor-pointer">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary/15 transition-colors">
+                <Search className="w-6 h-6" />
+              </div>
+              <div>
+                <p className="font-semibold">Browse nearby food</p>
+                <p className="text-sm text-muted-foreground">
+                  Search restaurants and menu items before you order
                 </p>
               </div>
             </div>
